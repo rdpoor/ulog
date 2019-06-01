@@ -43,7 +43,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 typedef struct {
   ulog_function_t fn;
-  ulog_severity_t threshold;
+  ulog_level_t threshold;
 } subscriber_t;
 
 // =============================================================================
@@ -60,7 +60,7 @@ void ulog_init() {
 }
 
 // search the s_subscribers table to install or update fn
-ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_severity_t threshold) {
+ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold) {
   int available_slot = -1;
   for (int i=0; i<ULOG_MAX_SUBSCRIBERS; i++) {
     if (s_subscribers[i].fn == fn) {
@@ -93,19 +93,20 @@ ulog_err_t ulog_unsubscribe(ulog_function_t fn) {
   return ULOG_ERR_NOT_SUBSCRIBED;
 }
 
-const char *ulog_severity_name(ulog_severity_t severity) {
+const char *ulog_level_name(ulog_level_t severity) {
   switch(severity) {
-   case ULOG_TRACE: return "TRACE";
-   case ULOG_DEBUG: return "DEBUG";
-   case ULOG_INFO: return "INFO";
-   case ULOG_WARNING: return "WARNING";
-   case ULOG_ERROR: return "ERROR";
-   case ULOG_CRITICAL: return "CRITICAL";
+   case ULOG_TRACE_LEVEL: return "TRACE";
+   case ULOG_DEBUG_LEVEL: return "DEBUG";
+   case ULOG_INFO_LEVEL: return "INFO";
+   case ULOG_WARNING_LEVEL: return "WARNING";
+   case ULOG_ERROR_LEVEL: return "ERROR";
+   case ULOG_CRITICAL_LEVEL: return "CRITICAL";
+   case ULOG_ALWAYS_LEVEL: return "ALWAYS";
    default: return "UNKNOWN";
   }
 }
 
-void ulog_message(ulog_severity_t severity, const char *fmt, ...) {
+void ulog_message(ulog_level_t severity, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
   vsnprintf(s_message, ULOG_MAX_MESSAGE_LENGTH, fmt, ap);

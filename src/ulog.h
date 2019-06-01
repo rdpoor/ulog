@@ -38,10 +38,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *     // You may print it or copy it, but saving a pointer to it will lead to
  *     // confusion and astonishment.
  *     //
- *     void my_console_logger(ulog_severity_t severity, const char *msg) {
+ *     void my_console_logger(ulog_level_t level, const char *msg) {
  *         printf("%s [%s]: %s\n",
  *             get_timestamp(),
- *             ulog_severity_name(severity),
+ *             ulog_level_name(level),
  *             msg);
  *     }
  *
@@ -56,7 +56,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *         ULOG_SUBSCRIBE(my_file_logger, ULOG_DEBUG);
  *
  *         int arg = 42;
- *         ULOG(ULOG_INFO, "Arg is %d", arg);  // logs to file but not console
+ *         ULOG_INFO("Arg is %d", arg);  // logs to file but not console
  *     }
  */
 
@@ -68,28 +68,48 @@ extern "C" {
     #endif
 
 typedef enum {
-  ULOG_TRACE=0, ULOG_DEBUG, ULOG_INFO, ULOG_WARNING, ULOG_ERROR, ULOG_CRITICAL
-} ulog_severity_t;
+  ULOG_TRACE_LEVEL=100,
+  ULOG_DEBUG_LEVEL,
+  ULOG_INFO_LEVEL,
+  ULOG_WARNING_LEVEL,
+  ULOG_ERROR_LEVEL,
+  ULOG_CRITICAL_LEVEL,
+  ULOG_ALWAYS_LEVEL
+} ulog_level_t;
 
 // Unless ULOG_ENABLED is defined at compile time, all logging is disabled and
 // no logging code is generated.  To enable logging, uncomment the next line or
 // add -DULOG_ENABLED to your compiler switches.
 
-// #define ULOG_ENABLED
+#define ULOG_ENABLED
 
 #ifdef ULOG_ENABLED
   #define ULOG_INIT() ulog_init()
   #define ULOG_SUBSCRIBE(a, b) ulog_subscribe(a, b)
   #define ULOG_UNSUBSCRIBE(a) ulog_unsubscribe(a)
-  #define ULOG_SEVERITY_NAME(a) ulog_severity_name(a)
-  #define ULOG ulog_message
+  #define ulog_level_name(a) ulog_level_name(a)
+  #define ULOG(...) ulog_message(__VA_ARGS__)
+  #define ULOG_TRACE(...) ulog_message(ULOG_TRACE_LEVEL, __VA_ARGS__)
+  #define ULOG_DEBUG(...) ulog_message(ULOG_DEBUG_LEVEL, __VA_ARGS__)
+  #define ULOG_INFO(...) ulog_message(ULOG_INFO_LEVEL, __VA_ARGS__)
+  #define ULOG_WARNING(...) ulog_message(ULOG_WARNING_LEVEL, __VA_ARGS__)
+  #define ULOG_ERROR(...) ulog_message(ULOG_ERROR_LEVEL, __VA_ARGS__)
+  #define ULOG_CRITICAL(...) ulog_message(ULOG_CRITICAL_LEVEL, __VA_ARGS__)
+  #define ULOG_ALWAYS(...) ulog_message(ULOG_ALWAYS_LEVEL, __VA_ARGS__)
 #else
   // uLog vanishes when disabled at compile time...
   #define ULOG_INIT() do {} while(0)
   #define ULOG_SUBSCRIBE(a, b) do {} while(0)
   #define ULOG_UNSUBSCRIBE(a) do {} while(0)
-  #define ULOG_SEVERITY_NAME(a) do {} while(0)
-  #define ULOG(a, ...) do {} while(0)
+  #define ulog_level_name(a) do {} while(0)
+  #define ULOG(s, f, ...) do {} while(0)
+  #define ULOG_TRACE(f, ...) do {} while(0)
+  #define ULOG_DEBUG(f, ...) do {} while(0))
+  #define ULOG_INFO(f, ...) do {} while(0)
+  #define ULOG_WARNING(f, ...) do {} while(0)
+  #define ULOG_ERROR(f, ...) do {} while(0)
+  #define ULOG_CRITICAL(f, ...) do {} while(0)
+  #define ULOG_ALWAYS(f, ...) do {} while(0)
 #endif
 
 typedef enum {
@@ -107,13 +127,13 @@ typedef enum {
 /**
  * @brief: prototype for uLog subscribers.
  */
-typedef void (*ulog_function_t)(ulog_severity_t severity, char *msg);
+typedef void (*ulog_function_t)(ulog_level_t severity, char *msg);
 
 void ulog_init();
-ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_severity_t threshold);
+ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold);
 ulog_err_t ulog_unsubscribe(ulog_function_t fn);
-const char *ulog_severity_name(ulog_severity_t severity);
-void ulog_message(ulog_severity_t severity, const char *fmt, ...);
+const char *ulog_level_name(ulog_level_t level);
+void ulog_message(ulog_level_t severity, const char *fmt, ...);
 
 #ifdef __cplusplus
 }
