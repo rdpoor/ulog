@@ -3,15 +3,15 @@ Lightweight logging for embedded microcontrollers
 
 ## About uLog
 
-uLog provides a structured logging mechanism for embeddedd microcontrollers or any system with limited resources.  
+uLog provides a structured logging mechanism for embedded microcontrollers or any system with limited resources.  
 It inherits the some concepts behind the popular Log4c and Log4j platforms, but with lower overhead.
 
-Some basic features of uLog:
-* Logs with familiar severity levels (CRITICAL, ERROR, WARNING, INFO, DEBUG, TRACE).
-* Supports multiple user-defined outputs (console, log file, in-memory buffer, etc) each with its own reporting threshold level.
-* uLog is "aggressively standalone" with minimal dependencies: only stdio.h, string.h and stdarg.h.
-* When ULOG_ENABLED is not defined at compile time, no logging code is generated.
-* Tiny: one header file, one source file, written in pure C.
+Some features of uLog:
+* uLog is easy to inporporate into nearly any environment, comprising one header file and one source file, and is written in pure C.
+* uLog provides familiar severity levels (CRITICAL, ERROR, WARNING, INFO, DEBUG, TRACE).
+* uLog supports multiple user-defined outputs (console, log file, in-memory buffer, etc), each with its own reporting threshold level.
+* uLog is "aggressively standalone" with minimal dependencies, requiring only stdio.h, string.h and stdarg.h.  
+* uLog gets out of your way when you're not using it: if ULOG_ENABLED is undefined at compile time, no logging code is generated.
 
 ## A quick intro by example:
 
@@ -50,9 +50,9 @@ int main() {
 }
 ```
 
-## Questions?  Comments?
+## Questions?  Comments?  Improvements?
 
-I welcome comments and pull requests in https://github.com/rdpoor/ulog/issues
+Comments and pull requests are welcome in https://github.com/rdpoor/ulog/issues
 
 - R Dunbar Poor
   June 2019
