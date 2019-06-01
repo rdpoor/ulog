@@ -12,6 +12,7 @@ Some features of uLog:
 * uLog supports multiple user-defined outputs (console, log file, in-memory buffer, etc), each with its own reporting threshold level.
 * uLog is "aggressively standalone" with minimal dependencies, requiring only stdio.h, string.h and stdarg.h.  
 * uLog gets out of your way when you're not using it: if ULOG_ENABLED is undefined at compile time, no logging code is generated.
+* uLog is well tested.  See the accompanying ulog_test.c file for details.
 
 ## A quick intro by example:
 
