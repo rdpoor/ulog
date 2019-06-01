@@ -37,17 +37,29 @@ void my_console_logger(ulog_severity_t severity, const char *msg) {
 }
 
 int main() {
+    int arg = 42;
+
     ULOG_INIT();
 
-    // log to the console messages that are WARNING or more severe.  You
-    // can re-subscribe at any point to change the severity level.
+    // log messages with a severity of WARNING or higher to the console.
     ULOG_SUBSCRIBE(my_console_logger, ULOG_WARNING);
  
-    // log to a file messages that are DEBUG or more severe
+    // log messages with a severity of DEBUG or higher to a file.  The user must
+    // provide a method for my_file_logger.
     ULOG_SUBSCRIBE(my_file_logger, ULOG_DEBUG);
 
-    int arg = 42;
-    ULOG(ULOG_INFO, "Arg is %d", arg);  // logs to file but not console
+    ULOG(ULOG_INFO, "Info, arg=%d", arg);        // logs to file but not console
+    ULOG(ULOG_CRITICAL, "Critical, arg=%d", arg);  // logs to file and console
+    
+    // dynamically change the threshold for a specific logger
+    ULOG_SUBSCRIBE(my_console_logger, ULOG_INFO);
+
+    ULOG(ULOG_INFO, "Info, arg=%d", arg);          // logs to file and console
+
+    // remove a logger
+    ULOG_UNSUBSCRIBE(my_file_logger);
+    
+    ULOG(ULOG_INFO, "Info, arg=%d", arg);          // logs to console only
 }
 ```
 
