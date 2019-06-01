@@ -1,5 +1,17 @@
-# ulog
+# uLog
 Lightweight logging for embedded microcontrollers
+
+## About uLog
+
+uLog provides a structured logging mechanism for embeddedd microcontrollers or any system with limited resources.  
+It inherits the some concepts behind the popular Log4c and Log4j platforms, but with lower overhead.
+
+Some basic features of uLog:
+* Logs with familiar severity levels (CRITICAL, ERROR, WARNING, INFO, DEBUG, TRACE).
+* Supports multiple user-defined outputs (console, log file, in-memory buffer, etc) each with its own reporting threshold level.
+* uLog is "aggressively standalone" with minimal dependencies: only stdio.h, string.h and stdarg.h.
+* When ULOG_ENABLED is not defined at compile time, no logging code is generated.
+* Tiny: one header file, one source file, written in pure C.
 
 ## A quick intro by example:
 
