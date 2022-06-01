@@ -104,7 +104,7 @@ typedef enum {
   #define ulog_level_name(a) do {} while(0)
   #define ULOG(s, f, ...) do {} while(0)
   #define ULOG_TRACE(f, ...) do {} while(0)
-  #define ULOG_DEBUG(f, ...) do {} while(0))
+  #define ULOG_DEBUG(f, ...) do {} while(0)
   #define ULOG_INFO(f, ...) do {} while(0)
   #define ULOG_WARNING(f, ...) do {} while(0)
   #define ULOG_ERROR(f, ...) do {} while(0)
