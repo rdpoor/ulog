@@ -29,10 +29,10 @@ Some features of uLog:
 // to ULOG.  This means you may print it or copy it, but saving a pointer to it
 // will lead to confusion and astonishment.
 //
-void my_console_logger(ulog_severity_t severity, const char *msg) {
+void my_console_logger(ulog_level_t severity, const char *msg) {
      printf("%s [%s]: %s\n",
          get_timestamp(),    // user defined function
-         ulog_severity_name(severity),
+         ulog_level_name(severity),
          msg);
 }
 
