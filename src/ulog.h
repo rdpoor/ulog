@@ -77,10 +77,15 @@ typedef enum {
   ULOG_ALWAYS_LEVEL
 } ulog_level_t;
 
-// Unless ULOG_ENABLED is defined at compile time, all logging is disabled and
-// no logging code is generated.  To enable logging, uncomment the next line or
-// add -DULOG_ENABLED to your compiler switches.
-
+// The following macros enable or disable uLog.  If `ULOG_ENABLED` is
+// defined at compile time, a macro such as `ULOG_INFO(...)` expands
+// into `ulog_message(ULOG_INFO_LEVEL, ...)`.  If `ULOG_ENABLED` is not
+// defined, then the same macro expands into `do {} while(0)` and will
+// not generate any code at all.  
+//
+// There are two ways to enable uLog: you can uncomment the following
+// line, or -- if it is commented out -- you can add -DULOG_ENABLED to
+// your compiler switches.
 #define ULOG_ENABLED
 
 #ifdef ULOG_ENABLED
