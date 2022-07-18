@@ -134,7 +134,7 @@ typedef enum {
  */
 typedef void (*ulog_function_t)(ulog_level_t severity, char *msg);
 
-void ulog_init();
+void ulog_init(void);
 ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold);
 ulog_err_t ulog_unsubscribe(ulog_function_t fn);
 const char *ulog_level_name(ulog_level_t level);
