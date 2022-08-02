@@ -75,7 +75,7 @@ typedef enum {
   ULOG_ERROR_LEVEL,
   ULOG_CRITICAL_LEVEL,
   ULOG_VERBOSE_LEVEL,
-  ULOG_ALWAYS=ULOG_VERBOSE_LEVEL
+  ULOG_ALWAYS_LEVEL=ULOG_VERBOSE_LEVEL
 } ulog_level_t;
 
 // The following macros enable or disable uLog.  If `ULOG_ENABLED` is
@@ -102,7 +102,7 @@ typedef enum {
   #define ULOG_ERROR(...) ulog_message(ULOG_ERROR_LEVEL, __VA_ARGS__)
   #define ULOG_CRITICAL(...) ulog_message(ULOG_CRITICAL_LEVEL, __VA_ARGS__)
   #define ULOG_VERBOSE(...) ulog_message(ULOG_VERBOSE_LEVEL, __VA_ARGS__)
-  #define ULOG_ALWAYS(...) ulog_message(ULOG_ALWAYS, __VA_ARGS__)
+  #define ULOG_ALWAYS(...) ulog_message(ULOG_ALWAYS_LEVEL, __VA_ARGS__)
 #else
   // uLog vanishes when disabled at compile time...
   #define ULOG_INIT() do {} while(0)
