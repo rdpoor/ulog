@@ -1,7 +1,5 @@
 project(ulog_example)
 
-include_directories(${PROJECT_SOURCE_DIR}/../src)
-
-add_executable(ulog_example ulog_example.c)
-
-target_link_libraries(ulog_example ulog)
+add_executable(${PROJECT_NAME} ulog_example.c)
+target_include_directories(${PROJECT_NAME} PRIVATE ulog)
+target_link_libraries(${PROJECT_NAME} ulog)
