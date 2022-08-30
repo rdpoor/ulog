@@ -86,13 +86,13 @@ typedef enum {
 // There are two ways to enable uLog: you can uncomment the following
 // line, or -- if it is commented out -- you can add -DULOG_ENABLED to
 // your compiler switches.
-#define ULOG_ENABLED
+//#define ULOG_ENABLED
 
 #ifdef ULOG_ENABLED
   #define ULOG_INIT() ulog_init()
   #define ULOG_SUBSCRIBE(a, b) ulog_subscribe(a, b)
   #define ULOG_UNSUBSCRIBE(a) ulog_unsubscribe(a)
-  #define ulog_level_name(a) ulog_level_name(a)
+  #define ULOG_LEVEL_NAME(a) ulog_level_name(a)
   #define ULOG(...) ulog_message(__VA_ARGS__)
   #define ULOG_TRACE(...) ulog_message(ULOG_TRACE_LEVEL, __VA_ARGS__)
   #define ULOG_DEBUG(...) ulog_message(ULOG_DEBUG_LEVEL, __VA_ARGS__)
@@ -106,7 +106,7 @@ typedef enum {
   #define ULOG_INIT() do {} while(0)
   #define ULOG_SUBSCRIBE(a, b) do {} while(0)
   #define ULOG_UNSUBSCRIBE(a) do {} while(0)
-  #define ulog_level_name(a) do {} while(0)
+  #define ULOG_LEVEL_NAME(a) do {} while(0)
   #define ULOG(s, f, ...) do {} while(0)
   #define ULOG_TRACE(f, ...) do {} while(0)
   #define ULOG_DEBUG(f, ...) do {} while(0)
@@ -124,11 +124,13 @@ typedef enum {
 } ulog_err_t;
 
 // define the maximum number of concurrent subscribers
+#ifndef ULOG_MAX_SUBSCRIBERS
 #define ULOG_MAX_SUBSCRIBERS 6
-
+#endif
 // maximum length of formatted log message
+#ifndef ULOG_MAX_MESSAGE_LENGTH
 #define ULOG_MAX_MESSAGE_LENGTH 120
-
+#endif
 /**
  * @brief: prototype for uLog subscribers.
  */
