@@ -11,6 +11,7 @@
 // to ULOG.  This means you may print it or copy it, but saving a pointer to it
 // will lead to confusion and astonishment.
 //
+#ifdef ULOG_ENABLED
 void my_console_logger(ulog_level_t severity, char *msg)
 {
   printf("console: %s [%s]: %s\n",
@@ -26,32 +27,39 @@ void my_file_logger(ulog_level_t severity, char *msg)
          ulog_level_name(severity),
          msg);
 }
+#endif
 
 int main()
 {
   int arg = 42;
 
-  ULOG_INIT();
+#ifdef ULOG_ENABLED
+  ulog_init();
 
   // log messages with a severity of WARNING or higher to the console.  The
   // user must supply a method for my_console_logger, e.g. along the lines
   // of what is shown above.
-  ULOG_SUBSCRIBE(my_console_logger, ULOG_DEBUG_LEVEL);
+  ulog_subscribe(my_console_logger, ULOG_DEBUG_LEVEL);
 
   // log messages with a severity of DEBUG or higher to a file.  The user must
   // provide a method for my_file_logger (not shown here).
-  ULOG_SUBSCRIBE(my_file_logger, ULOG_WARNING_LEVEL);
+  ulog_subscribe(my_file_logger, ULOG_WARNING_LEVEL);
+#endif
 
   ULOG_INFO("Info, arg=%d", arg);         // logs to file but not console
   ULOG_CRITICAL("Critical, arg=%d", arg); // logs to file and console
 
+#ifdef ULOG_ENABLED
   // dynamically change the threshold for a specific logger
-  ULOG_SUBSCRIBE(my_console_logger, ULOG_INFO_LEVEL);
+  ulog_subscribe(my_console_logger, ULOG_INFO_LEVEL);
+#endif
 
   ULOG_INFO("Info, arg=%d", arg); // logs to file and console
 
+#ifdef ULOG_ENABLED
   // remove a logger
-  ULOG_UNSUBSCRIBE(my_file_logger);
+  ulog_unsubscribe(my_file_logger);
+#endif
 
   ULOG_INFO("Info, arg=%d", arg); // logs to console only
 }

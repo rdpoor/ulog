@@ -46,14 +46,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *     }
  *
  *     int main() {
- *         ULOG_INIT();
+ *     #ifdef ULOG_ENABLED
+ *         ulog_init();
  *
  *         // log to the console messages that are WARNING or more severe.  You
  *         // can re-subscribe at any point to change the severity level.
- *         ULOG_SUBSCRIBE(my_console_logger, ULOG_WARNING);
+ *         ulog_subscribe(my_console_logger, ULOG_WARNING);
  *
  *         // log to a file messages that are DEBUG or more severe
- *         ULOG_SUBSCRIBE(my_file_logger, ULOG_DEBUG);
+ *         ulog_subscribe(my_file_logger, ULOG_DEBUG);
+ *     #endif
  *
  *         int arg = 42;
  *         ULOG_INFO("Arg is %d", arg);  // logs to file but not console
@@ -86,13 +88,9 @@ typedef enum {
 // There are two ways to enable uLog: you can uncomment the following
 // line, or -- if it is commented out -- you can add -DULOG_ENABLED to
 // your compiler switches.
-#define ULOG_ENABLED
+//#define ULOG_ENABLED
 
 #ifdef ULOG_ENABLED
-  #define ULOG_INIT() ulog_init()
-  #define ULOG_SUBSCRIBE(a, b) ulog_subscribe(a, b)
-  #define ULOG_UNSUBSCRIBE(a) ulog_unsubscribe(a)
-  #define ulog_level_name(a) ulog_level_name(a)
   #define ULOG(...) ulog_message(__VA_ARGS__)
   #define ULOG_TRACE(...) ulog_message(ULOG_TRACE_LEVEL, __VA_ARGS__)
   #define ULOG_DEBUG(...) ulog_message(ULOG_DEBUG_LEVEL, __VA_ARGS__)
@@ -103,10 +101,6 @@ typedef enum {
   #define ULOG_ALWAYS(...) ulog_message(ULOG_ALWAYS_LEVEL, __VA_ARGS__)
 #else
   // uLog vanishes when disabled at compile time...
-  #define ULOG_INIT() do {} while(0)
-  #define ULOG_SUBSCRIBE(a, b) do {} while(0)
-  #define ULOG_UNSUBSCRIBE(a) do {} while(0)
-  #define ulog_level_name(a) do {} while(0)
   #define ULOG(s, f, ...) do {} while(0)
   #define ULOG_TRACE(f, ...) do {} while(0)
   #define ULOG_DEBUG(f, ...) do {} while(0)

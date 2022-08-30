@@ -68,17 +68,17 @@ void logger_fn6(ulog_level_t severity, char *msg) {
 }
 
 void ulog_test() {
-  ULOG_INIT();
+  ulog_init();
   memset(fn_calls, 0, sizeof(fn_calls));
 
-  assert(ULOG_SUBSCRIBE(logger_fn0, ULOG_TRACE_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn1, ULOG_DEBUG_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn2, ULOG_INFO_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn3, ULOG_WARNING_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn4, ULOG_ERROR_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn5, ULOG_CRITICAL_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn0, ULOG_TRACE_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn1, ULOG_DEBUG_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn2, ULOG_INFO_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn3, ULOG_WARNING_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn4, ULOG_ERROR_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn5, ULOG_CRITICAL_LEVEL) == ULOG_ERR_NONE);
 
-  assert(ULOG_SUBSCRIBE(logger_fn6, ULOG_TRACE_LEVEL) == ULOG_ERR_SUBSCRIBERS_EXCEEDED);
+  assert(ulog_subscribe(logger_fn6, ULOG_TRACE_LEVEL) == ULOG_ERR_SUBSCRIBERS_EXCEEDED);
 
   ULOG_TRACE("Hello!");
   ULOG_DEBUG("Hello!");
@@ -108,14 +108,14 @@ void ulog_test() {
   // reset counters.  Test reassigning levels...
   memset(fn_calls, 0, sizeof(fn_calls));
 
-  assert(ULOG_SUBSCRIBE(logger_fn0, ULOG_CRITICAL_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn1, ULOG_ERROR_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn2, ULOG_WARNING_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn3, ULOG_INFO_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn4, ULOG_DEBUG_LEVEL) == ULOG_ERR_NONE);
-  assert(ULOG_SUBSCRIBE(logger_fn5, ULOG_TRACE_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn0, ULOG_CRITICAL_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn1, ULOG_ERROR_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn2, ULOG_WARNING_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn3, ULOG_INFO_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn4, ULOG_DEBUG_LEVEL) == ULOG_ERR_NONE);
+  assert(ulog_subscribe(logger_fn5, ULOG_TRACE_LEVEL) == ULOG_ERR_NONE);
 
-  assert(ULOG_SUBSCRIBE(logger_fn6, ULOG_TRACE_LEVEL) == ULOG_ERR_SUBSCRIBERS_EXCEEDED);
+  assert(ulog_subscribe(logger_fn6, ULOG_TRACE_LEVEL) == ULOG_ERR_SUBSCRIBERS_EXCEEDED);
 
   ULOG_TRACE("Hello!");
   ULOG_DEBUG("Hello!");
@@ -135,15 +135,15 @@ void ulog_test() {
   // reset counters.  Test unsubscribe
   memset(fn_calls, 0, sizeof(fn_calls));
 
-  assert(ULOG_UNSUBSCRIBE(logger_fn0) == ULOG_ERR_NONE);
-  assert(ULOG_UNSUBSCRIBE(logger_fn1) == ULOG_ERR_NONE);
-  assert(ULOG_UNSUBSCRIBE(logger_fn2) == ULOG_ERR_NONE);
-  assert(ULOG_UNSUBSCRIBE(logger_fn3) == ULOG_ERR_NONE);
-  assert(ULOG_UNSUBSCRIBE(logger_fn4) == ULOG_ERR_NONE);
+  assert(ulog_unsubscribe(logger_fn0) == ULOG_ERR_NONE);
+  assert(ulog_unsubscribe(logger_fn1) == ULOG_ERR_NONE);
+  assert(ulog_unsubscribe(logger_fn2) == ULOG_ERR_NONE);
+  assert(ulog_unsubscribe(logger_fn3) == ULOG_ERR_NONE);
+  assert(ulog_unsubscribe(logger_fn4) == ULOG_ERR_NONE);
   // leave logger_fn5 subscribed
-  // assert(ULOG_UNSUBSCRIBE(logger_fn5, ULOG_TRACE) == ULOG_ERR_NONE);
+  // assert(ulog_unsubscribe(logger_fn5, ULOG_TRACE) == ULOG_ERR_NONE);
 
-  assert(ULOG_UNSUBSCRIBE(logger_fn6) == ULOG_ERR_NOT_SUBSCRIBED);
+  assert(ulog_unsubscribe(logger_fn6) == ULOG_ERR_NOT_SUBSCRIBED);
 
   ULOG_TRACE("Hello!");
   ULOG_DEBUG("Hello!");
