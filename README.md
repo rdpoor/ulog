@@ -16,7 +16,7 @@ Some features of uLog:
 
 ## A quick intro by example:
 
-```
+``` c
 #include <stdio.h>
 #include "ulog.h"
 
