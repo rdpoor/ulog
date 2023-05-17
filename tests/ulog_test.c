@@ -86,7 +86,7 @@ void ulog_test() {
   ULOG_WARNING("Hello!");
   ULOG_ERROR("Hello!");
   ULOG_CRITICAL("Hello!");
-  ULOG_ALWAYS("Hello!");
+  ULOG_VERBOSE("Hello!");
 
   assert(fn_calls[0] == 7);  // logger_fn0 is at trace level: all messages
   assert(fn_calls[1] == 6);
@@ -123,9 +123,9 @@ void ulog_test() {
   ULOG_WARNING("Hello!");
   ULOG_ERROR("Hello!");
   ULOG_CRITICAL("Hello!");
-  ULOG_ALWAYS("Hello!");
+  ULOG_VERBOSE("Hello!");
 
-  assert(fn_calls[0] == 2);  // logger_fn0 receives critical and always msgs
+  assert(fn_calls[0] == 2);  // logger_fn0 receives critical and verbose msgs
   assert(fn_calls[1] == 3);
   assert(fn_calls[2] == 4);
   assert(fn_calls[3] == 5);
@@ -151,7 +151,7 @@ void ulog_test() {
   ULOG_WARNING("Hello!");
   ULOG_ERROR("Hello!");
   ULOG_CRITICAL("Hello!");
-  ULOG_ALWAYS("Hello!");
+  ULOG_VERBOSE("Hello!");
 
   assert(fn_calls[0] == 0);  // not subscribed...
   assert(fn_calls[1] == 0);
@@ -167,6 +167,5 @@ void ulog_test() {
   assert(strcmp(ulog_level_name(ULOG_WARNING_LEVEL), "WARNING") == 0);
   assert(strcmp(ulog_level_name(ULOG_ERROR_LEVEL), "ERROR") == 0);
   assert(strcmp(ulog_level_name(ULOG_CRITICAL_LEVEL), "CRITICAL") == 0);
-  assert(strcmp(ulog_level_name(ULOG_ALWAYS_LEVEL), "ALWAYS") == 0);
-
+  assert(strcmp(ulog_level_name(ULOG_VERBOSE_LEVEL), "VERBOSE") == 0);
 }
