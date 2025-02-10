@@ -46,17 +46,21 @@ typedef struct {
   ulog_level_t threshold;
 } subscriber_t;
 
+static ulog_level_t ulog_lowest_log_level();
+
 // =============================================================================
 // local storage
 
 static subscriber_t s_subscribers[ULOG_MAX_SUBSCRIBERS];
 static char s_message[ULOG_MAX_MESSAGE_LENGTH];
+static ulog_level_t s_lowest_log_level;
 
 // =============================================================================
 // user-visible code
 
 void ulog_init() {
   memset(s_subscribers, 0, sizeof(s_subscribers));
+  s_lowest_log_level = ulog_lowest_log_level();
 }
 
 // search the s_subscribers table to install or update fn
@@ -80,6 +84,8 @@ ulog_err_t ulog_subscribe(ulog_function_t fn, ulog_level_t threshold) {
   }
   s_subscribers[available_slot].fn = fn;
   s_subscribers[available_slot].threshold = threshold;
+  s_lowest_log_level = ulog_lowest_log_level(); // Update lowest log level
+
   return ULOG_ERR_NONE;
 }
 
@@ -89,6 +95,7 @@ ulog_err_t ulog_unsubscribe(ulog_function_t fn) {
   for (i=0; i<ULOG_MAX_SUBSCRIBERS; i++) {
     if (s_subscribers[i].fn == fn) {
       s_subscribers[i].fn = NULL;    // mark as empty
+      s_lowest_log_level = ulog_lowest_log_level(); // Update lowest log level
       return ULOG_ERR_NONE;
     }
   }
@@ -109,6 +116,11 @@ const char *ulog_level_name(ulog_level_t severity) {
 }
 
 void ulog_message(ulog_level_t severity, const char *fmt, ...) {
+  // Do not evaluate the log message if it will never be logged
+  if (severity < s_lowest_log_level){
+    return;
+  }
+
   va_list ap;
   int i;
   va_start(ap, fmt);
@@ -126,5 +138,18 @@ void ulog_message(ulog_level_t severity, const char *fmt, ...) {
 
 // =============================================================================
 // private code
+
+static ulog_level_t ulog_lowest_log_level(){
+  ulog_level_t lowest_log_level = ULOG_ALWAYS_LEVEL;
+  int i;
+  for (i=0; i<ULOG_MAX_SUBSCRIBERS; i++) {
+    if (s_subscribers[i].fn != NULL){
+      if (s_subscribers[i].threshold < lowest_log_level) {
+        lowest_log_level = s_subscribers[i].threshold;
+      }
+    }
+  }
+  return lowest_log_level;
+}
 
 #endif  // #ifdef ULOG_ENABLED
